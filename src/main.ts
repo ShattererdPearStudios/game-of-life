@@ -1,17 +1,22 @@
-import p5 from 'p5'
-import '../styles/main.sass'
-
 import P5 from "p5"
+import '../styles/main.sass'
+import { config1, config2, config3 } from "./init-config"
 
-let rows: number
-let cols: number
+type Grid = Array<Array<number>>
+type Coordinates = Array<[number, number]>
+
+let canvasWidth: number = 800
+let canvasHeight: number = 400
 
 let resolution: number = 10
-let grid: Array<Array<number>>
 
-let isPlaying: boolean = false
+let rows: number = canvasHeight / resolution
+let cols: number = canvasWidth / resolution
 
-function makeArray (cols: number, rows: number): number[][] {
+let grid: Grid
+
+
+function makeArray (cols: number, rows: number): Grid {
 
   const arr = new Array(cols)
   for (let i = 0; i < arr.length; i++) {
@@ -21,7 +26,7 @@ function makeArray (cols: number, rows: number): number[][] {
   return arr
 }
 
-function countNeighbors(grid: number[][], x: number, y: number): number {
+function countNeighbors(grid: Grid, x: number, y: number): number {
   let sum = 0;
   for (let i = -1; i < 2; i++) {
     for (let j = -1; j < 2; j++) {
@@ -34,7 +39,7 @@ function countNeighbors(grid: number[][], x: number, y: number): number {
   return sum;
 }
 
-function resetGrid(grid: number[][], cols: number, rows: number): void {
+function resetGrid(grid: Grid): void {
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
       grid[i][j] = 0
@@ -42,7 +47,7 @@ function resetGrid(grid: number[][], cols: number, rows: number): void {
   }
 }
 
-function drawGrid(p5: P5, grid: number[][], cols: number, rows: number): void {
+function drawGrid(p5: P5, grid: Grid): void {
   
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
@@ -66,16 +71,46 @@ function drawGrid(p5: P5, grid: number[][], cols: number, rows: number): void {
 
 }
 
-const playButton = document.getElementById('start')!
-const pauseButton = document.getElementById('stop')!
-const resetButton = document.getElementById('reset')!
-const randomButton = document.getElementById('randomize')!
+
+const getCoords = (grid: Grid): Coordinates => {
+
+  const coords: Array<[number, number]> = []
+
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+
+      if (grid[i][j] === 1) {
+        coords.push([i, j])
+      }
+    }
+  }
+
+  return coords
+
+}
+
+const applyCoordsToGrid = (grid: Grid, coords: Coordinates): void => {
+
+  resetGrid(grid)
+
+  coords.forEach((coord: [number, number]) => {
+    const [x, y] = coord
+    grid[x][y] = 1
+  })
+
+}
 
 
+
+
+// Declaring the buttons
+const playButton = document.getElementById('start-btn')!
+const pauseButton = document.getElementById('stop-btn')!
+const resetButton = document.getElementById('reset-btn')!
+const randomButton = document.getElementById('randomize-btn')!
 
 
 const sketch = (p5: P5) => {
-
 
 
   p5.setup = () => {
@@ -98,6 +133,64 @@ const sketch = (p5: P5) => {
 
     p5.noLoop()
 
+
+    // Get the coordinates of the current grid state
+    p5.keyPressed = () => {
+      if (p5.key === '4') {
+        console.log('Grid:')
+        console.log(getCoords(grid))
+      }
+    }
+
+
+    // Add event listeners
+    playButton.addEventListener('click', () => {
+      p5.loop()
+    })
+
+    pauseButton.addEventListener('click', () => {
+      p5.noLoop()
+    })
+
+    resetButton.addEventListener('click', () => {
+      p5.noLoop()
+      resetGrid(grid)
+      drawGrid(p5, grid)
+      p5.redraw()
+    })
+
+    randomButton.addEventListener('click', () => {
+      p5.loop()
+      for (let i = 0; i < cols; i++) {
+        for (let j = 0; j < rows; j++) {
+          grid[i][j] = Math.floor(Math.random() * 2);
+        }
+      }
+      drawGrid(p5, grid)
+      p5.noLoop()
+    })
+
+
+    // Load Config
+    p5.keyPressed = () => {
+      if (p5.key === '1') {
+        applyCoordsToGrid(grid, config1)
+        drawGrid(p5, grid)
+        p5.redraw()
+      }
+      if (p5.key === '2') {
+        applyCoordsToGrid(grid, config2)
+        drawGrid(p5, grid)
+        p5.redraw()
+      }
+      if (p5.key === '3') {
+        applyCoordsToGrid(grid, config3)
+        drawGrid(p5, grid)
+        p5.redraw()
+      }
+    }
+
+    applyCoordsToGrid(grid, config2)
   }
 
   p5.draw = () => {
@@ -115,13 +208,13 @@ const sketch = (p5: P5) => {
       p5.fill("#0f0e17");
       p5.rect(i * resolution, j * resolution, resolution - 1, resolution - 1)
 
-      drawGrid(p5, grid, cols, rows)
+      drawGrid(p5, grid)
     };
 
 
     p5.background("#0f0e17")
 
-    drawGrid(p5, grid, cols, rows) 
+    drawGrid(p5, grid) 
 
     let next = makeArray(cols, rows);
 
@@ -130,7 +223,6 @@ const sketch = (p5: P5) => {
       for (let j = 0; j < rows; j++) {
         let state = grid[i][j];
         // Count live neighbors!
-        let sum = 0;
         let neighbors = countNeighbors(grid, i, j);
   
         if (state == 0 && neighbors == 3) {
@@ -146,32 +238,6 @@ const sketch = (p5: P5) => {
     grid = next;
 
     
-
-    playButton.addEventListener('click', () => {
-      p5.loop()
-    })
-
-    pauseButton.addEventListener('click', () => {
-      p5.noLoop()
-    })
-
-    resetButton.addEventListener('click', () => {
-      p5.loop()
-      resetGrid(grid, cols, rows)
-      drawGrid(p5, grid, cols, rows)
-      p5.noLoop()
-    })
-
-    // randomButton.addEventListener('click', () => {
-    //   p5.loop()
-    //   for (let i = 0; i < cols; i++) {
-    //     for (let j = 0; j < rows; j++) {
-    //       grid[i][j] = Math.floor(Math.random() * 2);
-    //     }
-    //   }
-    //   drawGrid(p5, grid, cols, rows)
-    //   p5.noLoop()
-    // })
   }
 
 }
