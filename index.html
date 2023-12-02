@@ -4,26 +4,44 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/grid.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/init-config.ts"></script>
     <title>Game of Life</title>
   </head>
   <body>
-    <!-- Title -->
-    <div id="title">
-      <h1>Game of Life in P5!</h1>
-    </div>
-    <!-- App -->
-    <div id="app-container">
-      <div id="app"></div>
-    </div>
-    <!--Controls-->
-    <div id="controls-container">
-      <div id="controls">
-        <button id="start">Start</button>
-        <button id="stop">Stop</button>
-        <button id="reset">Reset</button>
-        <button id="randomize">Randomize</button>
+    <section class="aplication">
+      <!-- Title -->
+      <div id="title">
+        <h1>Game of Life in P5!</h1>
       </div>
-    </div>
-    <script type="module" src="/src/main.ts"></script>
+      <!-- App -->
+      <div id="app-container">
+        <div id="app"></div>
+      </div>
+      <!--Controls-->
+
+      <div id="controls-container">
+        <div id="controls">
+          <button class="btn" id="start-btn" title="Start">
+            <img src="/controls/play_arrow.svg" alt="Start">
+          </button>
+          <button class="btn" id="stop-btn" title="Stop">
+            <img src="/controls/pause.svg" alt="Stop">
+          </button>
+          <button class="btn" id="reset-btn" title="Reset">
+            <img src="/controls/replay.svg" alt="Reset">
+          </button>
+          <button class="btn" id="randomize-btn" title="Randomize">
+            <img src="/controls/shuffle.svg" alt="Randomize">
+          </button>
+          <!-- <button class="btn" id="save-btn" title="Save">
+            <img src="/controls/save.svg" alt="Save">
+          </button> -->
+          <!-- <button class="btn" id="load-btn" title="Load">
+            <img src="/controls/load.svg" alt="Load">
+          </button> -->
+        </div>
+      </div>
+    </section>
   </body>
 </html>
