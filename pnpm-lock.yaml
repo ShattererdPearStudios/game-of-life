@@ -5,9 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@types/node':
+    specifier: ^20.10.1
+    version: 20.10.1
   '@types/p5':
     specifier: ^1.7.0
     version: 1.7.0
+  browser-fs-access:
+    specifier: ^0.35.0
+    version: 0.35.0
   p5:
     specifier: ^1.7.0
     version: 1.7.0
@@ -21,7 +27,7 @@ devDependencies:
     version: 5.2.2
   vite:
     specifier: ^4.4.5
-    version: 4.4.9(sass@1.66.1)
+    version: 4.4.9(@types/node@20.10.1)(sass@1.66.1)
 
 packages:
 
@@ -223,6 +229,11 @@ packages:
     dev: true
     optional: true
 
+  /@types/node@20.10.1:
+    resolution: {integrity: sha512-T2qwhjWwGH81vUEx4EXmBKsTJRXFXNZTL4v0gi01+zyBmCwzE6TyHszqX01m+QHTEq+EZNo13NeJIdEqf+Myrg==}
+    dependencies:
+      undici-types: 5.26.5
+
   /@types/p5@1.7.0:
     resolution: {integrity: sha512-6AnjmW98/edgXB+pYDBx7t6QbCogIG6NUzey93JpGTZA4096C+KjSN8y0sj43QRd9XtblrAhoRXHj1pFZ2vsCg==}
     dev: false
@@ -243,6 +254,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       fill-range: 7.0.1
+
+  /browser-fs-access@0.35.0:
+    resolution: {integrity: sha512-sLoadumpRfsjprP8XzVjpQc0jK8yqHBx0PtUTGYj2fftT+P/t+uyDAQdMgGAPKD011in/O+YYGh7fIs0oG/viw==}
+    dev: false
 
   /chokidar@3.5.3:
     resolution: {integrity: sha512-Dr3sfKRP6oTcjf2JmUmFJfeVMvXBdegxB0iVQ5eb2V10uFJUCAS8OByZdVAyVb8xXNz3GjjTgj9kLWsZTqE6kw==}
@@ -400,7 +415,10 @@ packages:
     hasBin: true
     dev: true
 
-  /vite@4.4.9(sass@1.66.1):
+  /undici-types@5.26.5:
+    resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+
+  /vite@4.4.9(@types/node@20.10.1)(sass@1.66.1):
     resolution: {integrity: sha512-2mbUn2LlUmNASWwSCNSJ/EG2HuSRTnVNaydp6vMCm5VIqJsjMfbIWtbH2kDuwUVW5mMUKKZvGPX/rqeqVvv1XA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
@@ -428,6 +446,7 @@ packages:
       terser:
         optional: true
     dependencies:
+      '@types/node': 20.10.1
       esbuild: 0.18.20
       postcss: 8.4.29
       rollup: 3.29.0
