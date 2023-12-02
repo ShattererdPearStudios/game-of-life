@@ -23,3 +23,6 @@ There are for buttons:
 * **Randomize** - Applies random values across the grid
 
 The game starts with a initial configuration but can load a preloaded one using the keys *1*, *2* or *3*, or you can click anywhere on the grid to add or remove cells.
+
+
+Created with 💖 by ShatteredPear Studios 🍐
