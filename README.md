@@ -15,7 +15,7 @@ npm run dev
 
 ### How to use it:
 
-There are for buttons: 
+There are four buttons: 
 
 * **Play** - Starts the simulation
 * **Pause** - Pauses the simulation
